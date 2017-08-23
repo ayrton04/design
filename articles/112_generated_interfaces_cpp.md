@@ -104,6 +104,13 @@ All other constants are declared as `static const` members in the struct and the
 ### Constructors
 
 The *default constructor* initializes all members with their default value.
+In some cases this may not be desirable, since these fields will often be immediately overwritten with user-provided values.
+Therefore, the constructor takes an optional directive of type `enum rcl_msg_init_type` to control how initialization is done:
+
+- `MSG_INIT_DEFAULT_INITIALIZE_ALL` - Default initialize all members; any fields that have default values assigned to individual members will be set to the default values, all other values will be assigned to C++ defaults (generally 0 or the empty string).  Equivalent to not passing any argument to the constructor
+- `MSG_INIT_DEFAULT_INITIALIZE_NONE` - Don't initialize any members; it is the user's responsibility to ensure that all fields get initialized with some value, otherwise undefined behavior results
+- `MSG_INIT_ZERO_INITIALIZE_ALL` - Zero initialize all members; this differs from `MSG_INIT_DEFAULT_INITIALIZE_ALL` in that all members will be set to their C++ defaults (generally 0 or the empty string), and default values from the message definition will be ignored
+
 Optionally the constructor can be invoked with an allocator.
 
 The struct has no constructor with positional arguments for the members.
