@@ -107,10 +107,14 @@ The *default constructor* initializes all members with their default value; in c
 In some cases this may not be desirable, since these fields will often be immediately overwritten with user-provided values.
 Therefore, the constructor takes an optional directive of type `enum rosidl_runtime_cpp_msg_init_type` to control how initialization is done:
 
-- `MSG_INIT_INITIALIZE_ALL` - Initialize all members; any fields that have default values assigned to individual members will be set to the default values, all other values will be assigned to C++ defaults (generally 0 or the empty string).  Equivalent to not passing any argument to the constructor
+- `MSG_INIT_INITIALIZE_ALL` - Initialize all members; any fields that have default values assigned to individual members will be set to the default values, all other values will be assigned to C++ defaults (generally 0 or the empty string)
+  - The safest option, and also the default (used if not passing any argument to the constructor).
 - `MSG_INIT_SKIP_INITIALIZE` - Don't initialize any members; it is the user's responsibility to ensure that all fields get initialized with some value, otherwise undefined behavior results
+  - Used for maximum performance if the user is setting all of the members themselves.
 - `MSG_INIT_ZERO_INITIALIZE` - Zero initialize all members; this differs from `MSG_INIT_INITIALIZE_ALL` in that all members will be set to their C++ defaults (generally 0 or the empty string), and default values from the message definition will be ignored
+  - Used when the user doesn't want the overhead of initializing potentially complex or large default values, but still wants to ensure that all variables are properly initialized.
 - `MSG_INIT_INITIALIZE_DEFAULTS_ONLY` - Default initialize only fields that have default values assigned to individual members; all other fields will be left uninitialized
+  - Minimal initialization which ensures that existing code has correctly initialized members when a new field with a default value is added to the IDL later.
 
 Optionally the constructor can be invoked with an allocator.
 
