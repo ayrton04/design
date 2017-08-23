@@ -103,13 +103,14 @@ All other constants are declared as `static const` members in the struct and the
 
 ### Constructors
 
-The *default constructor* initializes all members with their default value.
+The *default constructor* initializes all members with their default value; in case the field doesn't have a default value, the C++ default is used (generally 0 or the empty string).
 In some cases this may not be desirable, since these fields will often be immediately overwritten with user-provided values.
-Therefore, the constructor takes an optional directive of type `enum rcl_msg_init_type` to control how initialization is done:
+Therefore, the constructor takes an optional directive of type `enum rcl_core_msg_init_type` to control how initialization is done:
 
-- `MSG_INIT_DEFAULT_INITIALIZE_ALL` - Default initialize all members; any fields that have default values assigned to individual members will be set to the default values, all other values will be assigned to C++ defaults (generally 0 or the empty string).  Equivalent to not passing any argument to the constructor
-- `MSG_INIT_DEFAULT_INITIALIZE_NONE` - Don't initialize any members; it is the user's responsibility to ensure that all fields get initialized with some value, otherwise undefined behavior results
-- `MSG_INIT_ZERO_INITIALIZE_ALL` - Zero initialize all members; this differs from `MSG_INIT_DEFAULT_INITIALIZE_ALL` in that all members will be set to their C++ defaults (generally 0 or the empty string), and default values from the message definition will be ignored
+- `MSG_INIT_INITIALIZE_ALL` - Initialize all members; any fields that have default values assigned to individual members will be set to the default values, all other values will be assigned to C++ defaults (generally 0 or the empty string).  Equivalent to not passing any argument to the constructor
+- `MSG_INIT_SKIP_INITIALIZE` - Don't initialize any members; it is the user's responsibility to ensure that all fields get initialized with some value, otherwise undefined behavior results
+- `MSG_INIT_ZERO_INITIALIZE` - Zero initialize all members; this differs from `MSG_INIT_INITIALIZE_ALL` in that all members will be set to their C++ defaults (generally 0 or the empty string), and default values from the message definition will be ignored
+- `MSG_INIT_INITIALIZE_DEFAULTS_ONLY` - Default initialize only fields that have default values assigned to individual members; all other fields will be left uninitialized
 
 Optionally the constructor can be invoked with an allocator.
 
