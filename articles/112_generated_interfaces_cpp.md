@@ -103,11 +103,11 @@ All other constants are declared as `static const` members in the struct and the
 
 ### Constructors
 
-The *default constructor* initializes all members with their default value; in case the field doesn't have a default value, the C++ default is used (generally 0 or the empty string).
+The *default constructor* initializes all members with their default value; if a field doesn't have a default value, then the field is [value-initialized](http://en.cppreference.com/w/cpp/language/value_initialization).
 In some cases this may not be desirable, since these fields will often be immediately overwritten with user-provided values.
 Therefore, the constructor takes an optional directive of type `enum rosidl_runtime_cpp_msg_init_type` to control how initialization is done:
 
-- `MSG_INIT_INITIALIZE_ALL` - Initialize all members; any fields that have default values assigned to individual members will be set to the default values, all other values will be assigned to C++ defaults (generally 0 or the empty string)
+- `MSG_INIT_INITIALIZE_ALL` - Initialize all members with their default value; if a field doesn't have a default value, then the field is [value-initialized](http://en.cppreference.com/w/cpp/language/value_initialization).
   - The safest option, and also the default (used if not passing any argument to the constructor).
 - `MSG_INIT_SKIP_INITIALIZE` - Don't initialize any members; it is the user's responsibility to ensure that all fields get initialized with some value, otherwise undefined behavior results
   - Used for maximum performance if the user is setting all of the members themselves.
