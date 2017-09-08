@@ -39,12 +39,11 @@ Slower than real time simulation is necessary for complicated systems where accu
 Often the simulation is the limiting factor for the system and as such the simulator can be a time source for faster or slower playback.
 Additionally if the simulation is paused the system can also pause using the same mechanism.
 
-
 ## Approach
 
 To provide a simplified time interface we will provide a ROS time and duration datatype.
 To query for the latest time a ROS Clock interface will be provided.
-The Clock will be populated by one or more TimeSource mechanisms.
+A TimeSource can manage one or more Clock instances.
 
 
 ## Clock
@@ -153,6 +152,7 @@ The latter will allow code to respond to the change in time and include the new 
 
 Any API which is blocking will allow a set of flags to indicate the appropriate behavior in case of time jump.
 This will allow the user to choose to error immediately on a time jump or choose to ignore.
+When registering a callback for jumps a filter for the minimum backwards or forwards distance will be possible and well as whether a clock change is to be included.
 
 ### RCL implementation
 
